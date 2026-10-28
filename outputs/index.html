@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#121512">
+  <meta name="description" content="Histórias curtas de coquetéis clássicos e consulta rápida ao cardápio Olivas.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Olivas — histórias servidas à mesa</title>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Olivas, início"><span class="brand-mark">O</span><span><b>OLIVAS</b><small>COQUETELARIA · CADERNO DE BAR</small></span></a>
+    <button class="icon-button" id="installButton" hidden aria-label="Instalar aplicativo" title="Instalar">↧</button>
+  </header>
+  <main id="inicio">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-copy"><span class="eyebrow">CADERNO DE COQUETELARIA</span><h1 id="heroTitle">Boas histórias.<br><em>Ótimos drinks.</em></h1><p>Um gole de história para guardar. Um cardápio à mão para servir.</p></div>
+      <span class="hero-index">01 <i>—</i> 03</span>
+    </section>
+    <nav class="tabs" aria-label="Seções principais" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" data-tab="olivas">Olivas</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="iba">IBA</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="study">Prova</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="spirits">Destilados</button>
+      <button class="tab settings-tab" role="tab" aria-selected="false" data-tab="settings" aria-label="Configurações do cardápio">⚙ <span class="settings-label">Menu</span></button>
+    </nav>
+    <section class="panel" id="olivasPanel" role="tabpanel">
+      <div class="section-heading"><div><span class="eyebrow">NO MENU · À MÃO NA HORA DO SERVIÇO</span><h2>Olivas</h2><p>Consulta rápida do cardápio para preparar e apresentar cada drink.</p></div><span class="section-symbol">◉</span></div>
+      <div class="menu-note"><span>✳</span><p>As receitas iniciais foram transcritas do PDF enviado. Confira as medidas com a equipe: os dados podem ser editados em <b>Menu</b>.</p></div>
+      <nav class="menu-subnav" id="menuSubnav" aria-label="Categorias do cardápio Olivas" role="tablist"></nav>
+      <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="menuSearch" type="search" placeholder="Buscar no cardápio" autocomplete="off"><kbd>/</kbd></label><label class="select-wrap"><span class="sr-only">Ordenar cardápio</span><select id="menuSort"><option value="az">A–Z</option><option value="category">Por categoria</option></select></label></div>
+      <div class="drink-grid menu-grid" id="menuGrid"></div>
+    </section>
+    <section class="panel" id="ibaPanel" role="tabpanel" hidden>
+      <div class="section-heading"><div><span class="eyebrow">CATÁLOGO INTERNACIONAL · IBA</span><h2>Coquetéis IBA</h2><p>Explore os coquetéis oficiais por categoria. Abra a ficha da IBA para consultar história, receita e técnica.</p></div><span class="section-symbol">✳</span></div>
+      <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="ibaSearch" type="search" placeholder="Buscar coquetel" autocomplete="off"></label></div>
+      <nav class="menu-subnav iba-subnav" id="ibaSubnav" aria-label="Categorias de coquetéis IBA" role="tablist"></nav>
+      <p class="storage-note iba-note">Consulte ingredientes, medidas, preparo e guarnição nas fichas oficiais. Histórias aparecem quando há fontes históricas confiáveis; cada uma indica sua fonte. Os links das receitas abrem a página oficial da IBA.</p>
+      <div class="drink-grid" id="ibaGrid"></div>
+    </section>
+    <section class="panel" id="studyPanel" role="tabpanel" hidden>
+      <div class="section-heading"><div><span class="eyebrow">PRATIQUE · REVISE · EVOLUA</span><h2>Prova de coquetelaria</h2><p>20 perguntas sorteadas sobre drinks, técnicas, insumos e destilados.</p></div><span class="section-symbol">✳</span></div>
+      <div class="study-intro"><span>✦</span><p>Você verá na hora se acertou. Se errar, a resposta correta e uma explicação aparecem antes de avançar.</p></div>
+      <section class="quiz-launch" id="quizLaunch">
+        <span class="eyebrow">DESAFIO DE 20 QUESTÕES</span><h3>Escolha a dificuldade</h3>
+        <p>As perguntas cobrem coquetéis, técnicas, insumos e destilados. No fim você vê a nota e a revisão comentada.</p>
+        <div class="quiz-levels"><button class="button quiz-level active" data-level="facil">Fácil</button><button class="button quiz-level" data-level="intermediario">Intermediário</button><button class="button quiz-level" data-level="dificil">Difícil</button></div>
+        <p class="quiz-pool-note" id="quizPoolNote"></p>
+        <button class="button button-primary" id="startQuiz">Começar prova</button>
+      </section>
+      <section class="quiz-stage" id="quizStage" hidden aria-live="polite"></section>
+      <section class="quiz-result" id="quizResult" hidden aria-live="polite"></section>
+    </section>
+    <section class="panel" id="spiritsPanel" role="tabpanel" hidden>
+      <div class="section-heading"><div><span class="eyebrow">ORIGEM · ESTILO · RÓTULOS</span><h2>Destilados</h2><p>Um guia breve para reconhecer as principais famílias e alguns rótulos.</p></div><span class="section-symbol">◌</span></div>
+      <div class="chip-row" id="spiritChips" aria-label="Tipos de destilado"></div>
+      <div id="spiritContent"></div>
+    </section>
+    <section class="panel" id="settingsPanel" role="tabpanel" hidden>
+      <div class="section-heading"><div><span class="eyebrow">SEMPRE ATUALIZADO</span><h2>Menu Olivas</h2><p>Cadastre, edite ou remova os drinks disponíveis no bar.</p></div><span class="section-symbol">✳</span></div>
+      <div class="settings-actions"><button class="button button-primary" id="addDrink">＋ Adicionar drink</button><button class="button button-quiet" id="exportData">Exportar backup</button><label class="button button-quiet file-button">Importar backup<input id="importData" type="file" accept="application/json,.json" hidden></label><button class="button button-quiet" id="restoreMenu">Restaurar transcrição do PDF</button></div>
+      <p class="storage-note">Seus dados ficam salvos neste dispositivo. O backup inclui drinks do menu e favoritos.</p>
+      <div id="settingsList" class="settings-list"></div>
+    </section>
+    <footer class="footer"><span>UM BRINDE ÀS BOAS HISTÓRIAS.</span><span>SEU CADERNO OLIVAS <i>✳</i></span></footer>
+  </main>
+  <dialog id="drinkDialog" class="drink-dialog"><button class="dialog-close" id="dialogClose" aria-label="Fechar">×</button><div id="dialogContent"></div></dialog>
+  <dialog id="editDialog" class="edit-dialog"><button class="dialog-close" id="editClose" aria-label="Fechar">×</button><form id="drinkForm"><span class="eyebrow">CARDÁPIO OLIVAS</span><h2 id="formTitle">Novo drink</h2><input type="hidden" name="id"><label>Nome<input required name="name" maxlength="60"></label><label>Grupo no cardápio<select name="houseGroup" required><option>Autorais</option><option>Releituras</option><option>Sem álcool</option><option>Clássicos</option><option>Gin e caipiras</option></select></label><label>Família / estilo<input name="category" maxlength="40" placeholder="Ex.: Sour, Highball, Aperitivo"></label><label>Ingredientes e medidas<textarea name="ingredients" rows="5" required placeholder="Um ingrediente por linha, ex.: Gin — 60 ml"></textarea></label><label>Método<textarea name="method" rows="2" placeholder="Ex.: Batido, dupla coagem"></textarea></label><div class="form-row"><label>Copo<input name="glass" maxlength="60"></label><label>Guarnição<input name="garnish" maxlength="100"></label></div><label>Descrição para apresentar ao cliente<textarea name="description" rows="3" maxlength="300"></textarea></label><button class="button button-primary" type="submit">Salvar drink</button></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="iba-data.js"></script>
+  <script src="iba-history.js"></script>
+  <script src="study-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
