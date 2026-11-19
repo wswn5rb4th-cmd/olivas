@@ -66,10 +66,10 @@ const MENU_DEFAULT=[
  m('caipivodka','Caipivodka','Caipirinhas','Copo baixo','Limão-taiti','Vodka — 60 ml\nXarope de açúcar — 25 ml\nMorango — 60 ml\nLimão-taiti — 1','Montado','Vodka, morango, açúcar e limão-taiti.'),
  m('caipirinha','Caipirinha','Caipirinhas','Copo baixo','Limão-taiti','Cachaça prata — 60 ml\nXarope de açúcar — 25 ml\nMorango — 60 ml\nLimão-taiti — 1','Montado','Cachaça prata, morango, açúcar e limão-taiti.'),
  m('gin-tonica','Gin Tônica','Highballs','Taça bowl','1 limão-siciliano e oliveira','Gin — 60 ml\nTônica — 240 ml','Montado','Gin e tônica com limão-siciliano e oliveira.'),
- m('caipivinho','Caipivinho','Caipirinhas','Copo baixo','Limão-taiti','Cachaça prata — 30 ml\nSmirnoff — 30 ml\nVinho tinto — 60 ml\nXarope de açúcar — 25 ml\nLimão-taiti — 1','Montado','Cachaça prata, Smirnoff, vinho tinto, açúcar e limão-taiti.'),
+ m('caipivinho','Caipivinho','Vinho','Copo baixo','Limão-taiti','Vinho tinto — 60 ml\nXarope de açúcar — 25 ml\nLimão-taiti — 1','Montado','Vinho tinto, açúcar e limão-taiti.'),
  m('apple-gin','Apple Gin','Highballs','Taça bowl','1 hortelã','Gin — 60 ml\nTônica — 240 ml\nXarope de maçã verde — 25 ml','Montado','Gin, tônica e xarope de maçã verde.'),
  m('tropical-gin','Tropical Gin','Highballs','Taça bowl','Oliveira','Gin — 60 ml\nTônica — 240 ml\nXarope de laranja — 25 ml','Montado','Gin, tônica e xarope de laranja.'),
- m('red-berry','Red Berry','Highballs','Taça bowl','Hortelã','Gin — 60 ml\nTônica — 240 ml\nXarope de frutas vermelhas — 25 ml','Montado','Gin, tônica e xarope de frutas vermelhas.')
+ m('red-berry','Red Berry','Highballs','Taça bowl','Hortelã','Gin — 60 ml\nTônica — 240 ml\nXarope de frutas vermelhas — 25 ml','Montado','Gin, tônica e xarope de frutas vermelhas.'),
  m('melancita','Melancita','Highballs','Taça bowl','Limão e hortelã','Gin — 60 ml\nEnergético melancia — 240 ml','Montado','Gin e energético de melancia.')
 ];
 function m(id,name,category,glass,garnish,ingredients,method,description){return{id,name,category,glass,garnish,ingredients,method,description,source:'Transcrito do PDF enviado'}}
