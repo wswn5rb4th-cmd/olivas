@@ -82,7 +82,7 @@ function houseGroup(drink){return drink.houseGroup||HOUSE_GROUP_BY_ID[drink.id]|
 
 const STORE='olivas-caderno-v1';
 let state=loadState();
-function loadState(){try{const d=JSON.parse(localStorage.getItem(STORE));if(d&&Array.isArray(d.menu)&&Array.isArray(d.favorites)){const ids=['caipira-olivas','bergamota','43-sour','sunset','gin-basil-smash','olivia-vinho','limoncello-spritz','refreshing','negroni-olivas','mojito-00','sunset-00','guapo','linha-bonita','blue-paradise','torta-limao','pink-lemonade'];const managed=MENU_DEFAULT.filter(x=>ids.includes(x.id));const others=d.menu.filter(x=>!ids.includes(x.id)&&x.id!=='daiquiri-tomate');return{...d,menu:[...others,...managed]}}}catch{}return{menu:structuredClone(MENU_DEFAULT),favorites:[]}}
+function loadState(){try{const d=JSON.parse(localStorage.getItem(STORE));if(d&&Array.isArray(d.menu)&&Array.isArray(d.favorites)){const ids=['caipira-olivas','bergamota','43-sour','sunset','gin-basil-smash','olivia-vinho','limoncello-spritz','refreshing','negroni-olivas','mojito-00','sunset-00','guapo','linha-bonita','blue-paradise','torta-limao','pink-lemonade','gin-tonica','tropical-gin','red-berry','apple-gin','caipivinho','caipirinha','caipivodka'];const managed=MENU_DEFAULT.filter(x=>ids.includes(x.id));const others=d.menu.filter(x=>!ids.includes(x.id)&&x.id!=='daiquiri-tomate');return{...d,menu:[...others,...managed]}}}catch{}return{menu:structuredClone(MENU_DEFAULT),favorites:[]}}
 function persist(){localStorage.setItem(STORE,JSON.stringify(state));render()}
 const $=(s,root=document)=>root.querySelector(s),$$=(s,root=document)=>[...root.querySelectorAll(s)];
 let toastTimer;
