@@ -63,12 +63,13 @@ const MENU_DEFAULT=[
  m('mojito-menu','Mojito','Highballs','Long drink','Hortelã e limão','Rum — 60 ml\nSuco de limão — 30 ml\nXarope de açúcar — 25 ml\nHortelã — 10 folhas','Batido','Rum, hortelã, limão e açúcar.'),
  m('bramble-menu','Bramble','Sours','Copo baixo','Hortelã','Gin — 60 ml\nSuco de limão — 30 ml\nXarope de açúcar — 20 ml\nLicor de amora — 20 ml','Batido; dupla coagem','Gin sour com licor de amora.'),
  m('maitai','Mai Tai','Tropicais','Copo tiki','Hortelã e zest de limão','Rum oro — 60 ml\nSuco de limão — 30 ml\nCointreau — 15 ml\nXarope de amêndoa — 15 ml\nXarope de açúcar — 7,5 ml\nAngostura — 2 dashes','Batido','Rum, cítricos, amêndoa e laranja.'),
- m('caipivodka','Caipivodka','Caipirinhas','Copo baixo','Limão-taiti','Smirnoff — 60 ml\nAbsolut — 60 ml\nGrey Goose — 60 ml\nCiroc — 60 ml\nXarope de açúcar — 25 ml\nLimão-siciliano — ½\nKiwi — ½\nMorango — 60 g\nLimão-taiti — 1','Batido','Escolha da vodka com limões e fruta.'),
- m('caipirinha','Caipirinha','Caipirinhas','Copo baixo','Limão-taiti','Cachaça prata — 60 ml\nWeber Haus amburana — 60 ml\nWeber Haus 7 madeiras — 60 ml\nXarope de açúcar — 25 ml\nLimão-siciliano — ½\nKiwi — ½\nMorango — 60 g\nLimão-taiti — 1','Batido','Cachaça, limão e fruta; consulte a equipe sobre as opções de cachaça.'),
- m('gin-tonica','Gin Tônica','Highballs','Taça bowl','Limão-siciliano e oliveira','Gin — 60 ml\nTônica — 240 ml','Montado','Gin e tônica com limão-siciliano.'),
- m('caipivinho','Caipivinho','Vinho','Copo baixo','Hortelã','Cachaça prata — 30 ml\nSmirnoff — 30 ml\nVinho tinto — 60 ml\nXarope de açúcar — 25 ml\nLimão-taiti — 1','Montado','Vinho tinto com cachaça, vodka e limão.'),
- m('apple-gin','Apple Gin','Highballs','Taça bowl','Maçã verde e hortelã','Gin — 60 ml\nEnergético maçã verde — 240 ml','Montado','Gin e energético de maçã verde.'),
- m('tropical-gin','Tropical Gin','Highballs','Taça bowl','Laranja e oliveira','Gin — 60 ml\nEnergético tropical — 240 ml','Montado','Gin e energético tropical.'),
+ m('caipivodka','Caipivodka','Caipirinhas','Copo baixo','Limão-taiti','Vodka — 60 ml\nXarope de açúcar — 25 ml\nMorango — 60 ml\nLimão-taiti — 1','Montado','Vodka, morango, açúcar e limão-taiti.'),
+ m('caipirinha','Caipirinha','Caipirinhas','Copo baixo','Limão-taiti','Cachaça prata — 60 ml\nXarope de açúcar — 25 ml\nMorango — 60 ml\nLimão-taiti — 1','Montado','Cachaça prata, morango, açúcar e limão-taiti.'),
+ m('gin-tonica','Gin Tônica','Highballs','Taça bowl','1 limão-siciliano e oliveira','Gin — 60 ml\nTônica — 240 ml','Montado','Gin e tônica com limão-siciliano e oliveira.'),
+ m('caipivinho','Caipivinho','Caipirinhas','Copo baixo','Limão-taiti','Cachaça prata — 30 ml\nSmirnoff — 30 ml\nVinho tinto — 60 ml\nXarope de açúcar — 25 ml\nLimão-taiti — 1','Montado','Cachaça prata, Smirnoff, vinho tinto, açúcar e limão-taiti.'),
+ m('apple-gin','Apple Gin','Highballs','Taça bowl','1 hortelã','Gin — 60 ml\nTônica — 240 ml\nXarope de maçã verde — 25 ml','Montado','Gin, tônica e xarope de maçã verde.'),
+ m('tropical-gin','Tropical Gin','Highballs','Taça bowl','Oliveira','Gin — 60 ml\nTônica — 240 ml\nXarope de laranja — 25 ml','Montado','Gin, tônica e xarope de laranja.'),
+ m('red-berry','Red Berry','Highballs','Taça bowl','Hortelã','Gin — 60 ml\nTônica — 240 ml\nXarope de frutas vermelhas — 25 ml','Montado','Gin, tônica e xarope de frutas vermelhas.')
  m('melancita','Melancita','Highballs','Taça bowl','Limão e hortelã','Gin — 60 ml\nEnergético melancia — 240 ml','Montado','Gin e energético de melancia.')
 ];
 function m(id,name,category,glass,garnish,ingredients,method,description){return{id,name,category,glass,garnish,ingredients,method,description,source:'Transcrito do PDF enviado'}}
