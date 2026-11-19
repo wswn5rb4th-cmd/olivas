@@ -1,4 +1,4 @@
-const CACHE='olivas-caderno-v33';
+const CACHE='olivas-caderno-v34';
 const FILES=['./','./index.html','./style.css','./iba-data.js','./iba-history.js','./study-data.js','./app.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png','./assets/olive-sunset.jpg','./assets/olive-grove.jpg','./assets/olive-press.jpg','./assets/green-olives.jpg','./assets/olive-branch.jpg'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));self.skipWaiting()});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim()});
