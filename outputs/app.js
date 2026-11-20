@@ -77,7 +77,7 @@ function houseGroup(drink){return drink.houseGroup||HOUSE_GROUP_BY_ID[drink.id]|
 const STORE='olivas-caderno-v1';
 let state=loadState();
 function loadState(){try{const d=JSON.parse(localStorage.getItem(STORE));if(d&&Array.isArray(d.menu)&&Array.isArray(d.favorites)){const ids=['caipira-olivas','bergamota','43-sour','sunset','gin-basil-smash','olivia-vinho','limoncello-spritz','refreshing','negroni-olivas','mojito-00','sunset-00','guapo','linha-bonita','blue-paradise','torta-limao','pink-lemonade','gin-tonica','tropical-gin','red-berry','apple-gin','caipivinho','caipirinha','caipivodka'];const managed=MENU_DEFAULT.filter(x=>ids.includes(x.id));const classicIds=['aperol-classico','negroni-menu','whisky-sour-menu','moscow-mule-menu','clericot','bramble-menu','fitzgerald','carajillo','paloma','margarita-menu','mojito-menu'];const removeClassicIds=['cosmopolitan','boulevardier-menu','pisco-sour-menu','maitai','aperol-vinho','penicillin'];const others=d.menu.filter(x=>!ids.includes(x.id)&&!removeClassicIds.includes(x.id)&&x.id!=='daiquiri-tomate'&&x.id!=='melancita'&&!classicIds.includes(x.id));return{...d,menu:[...others,...managed,...MENU_DEFAULT.filter(x=>classicIds.includes(x.id))].map(x=>classicIds.includes(x.id)?{...x,houseGroup:'Clássicos e Nova Era'}:x)}}}catch{}return{menu:structuredClone(MENU_DEFAULT),favorites:[]}}
-function persist(){localStorage.setItem(STORE,JSON.stringify(state));render()}
+async function persist(){if(!window.olivasSession?.isAdmin){toast('Somente o administrador pode alterar o cardápio');return}localStorage.setItem(STORE,JSON.stringify(state));const rows=state.menu.map(d=>({name:d.name,house_group:houseGroup(d),category:d.category||'',ingredients:d.ingredients||'',method:d.method||'',glass:d.glass||'',garnish:d.garnish||'',description:d.description||'',source:`OLIVAS_ID:${d.id}|${d.source||''}`}));const {error:delError}=await window.olivasSupabase.from('recipes').delete().not('id','is',null);if(delError){toast('Falha ao sincronizar cardápio');return}const {error}=await window.olivasSupabase.from('recipes').insert(rows);if(error){toast('Erro ao salvar no banco: '+error.message);return}render()}
 const $=(s,root=document)=>root.querySelector(s),$$=(s,root=document)=>[...root.querySelectorAll(s)];
 let toastTimer;
 function esc(value=''){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -163,5 +163,38 @@ $('#exportData').addEventListener('click',()=>{const blob=new Blob([JSON.stringi
 $('#importData').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!data||!Array.isArray(data.menu)||!Array.isArray(data.favorites))throw Error('Formato inválido');if(!data.menu.every(d=>d&&typeof d.id==='string'&&typeof d.name==='string'&&typeof d.ingredients==='string'))throw Error('Dados de drinks inválidos');state={menu:data.menu,favorites:data.favorites.filter(id=>typeof id==='string')};persist();toast('Backup importado')}catch(err){toast('Não foi possível importar: confira o arquivo')}finally{e.target.value=''}});
 $('#restoreMenu').addEventListener('click',()=>{state.menu=structuredClone(MENU_DEFAULT);persist();toast('Transcrição do PDF restaurada')});
 let installPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('#installButton').hidden=false});$('#installButton').addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('#installButton').hidden=true});
-render();if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+async function bootOlivas(){
+ const gate=$('#authGate'),form=$('#authForm'),message=$('#authMessage');
+ const client=window.supabase?.createClient('https://mpqqbtpewhtgemsfafhz.supabase.co','sb_publishable_78sR-ZguyIm69-MWbrE1Tg_cJrGOvHD');
+ if(!client){message.textContent='Não foi possível carregar o serviço de autenticação.';return}
+ window.olivasSupabase=client;
+ async function enter(session){
+  if(!session){gate.hidden=false;document.querySelector('main').hidden=true;return}
+  const {data:profile,error:profileError}=await client.from('profiles').select('email,display_name,role,active').eq('id',session.user.id).single();
+  if(profileError||!profile||!profile.active){await client.auth.signOut();gate.hidden=false;document.querySelector('main').hidden=true;message.textContent='Acesso não autorizado ou funcionário desativado.';return}
+  window.olivasSession={user:session.user,profile,isAdmin:profile.role==='admin'};
+  const {data:recipes,error}=await client.from('recipes').select('*').order('sort_order').order('name');
+  if(error){message.textContent='Não foi possível carregar o cardápio. '+error.message;return}
+  if(!recipes.length&&profile.role==='admin'){
+   const seed=MENU_DEFAULT.map(d=>({name:d.name,house_group:houseGroup(d),category:d.category||'',ingredients:d.ingredients,method:d.method,glass:d.glass,garnish:d.garnish,description:d.description,source:'OLIVAS_ID:'+d.id+'|'+d.source}));
+   const {error:seedError}=await client.from('recipes').insert(seed);
+   if(seedError){message.textContent='Falha ao preparar o cardápio inicial: '+seedError.message;return}
+   return enter(session);
+  }
+  if(recipes.length){state.menu=recipes.map(d=>{const match=(d.source||'').match(/^OLIVAS_ID:([^|]+)\|(.*)$/);return{id:match?.[1]||('recipe-'+d.id),name:d.name,houseGroup:d.house_group,category:d.category,ingredients:d.ingredients,method:d.method,glass:d.glass,garnish:d.garnish,description:d.description,source:match?.[2]||d.source}});localStorage.setItem(STORE,JSON.stringify(state))}
+  if(!profile.active){await client.auth.signOut();return}
+  gate.hidden=true;document.querySelector('main').hidden=false;
+  $('#staffWatermark').hidden=false;$('#staffWatermark').textContent=(profile.display_name||profile.email)+' · OLIVAS';
+  if(!window.olivasSession.isAdmin){$('.settings-tab').hidden=true;$('#settingsPanel').hidden=true;$('#addDrink').hidden=true;$('#exportData').hidden=true;$('#importData').parentElement.hidden=true;$('#restoreMenu').hidden=true}
+  await client.from('access_logs').insert({user_id:session.user.id,email:profile.email,action:'login',user_agent:navigator.userAgent});
+  render();
+ }
+ form.addEventListener('submit',async e=>{e.preventDefault();message.textContent='Verificando acesso…';const fd=new FormData(form);const {data,error}=await client.auth.signInWithPassword({email:fd.get('email'),password:fd.get('password')});if(error){message.textContent='E-mail ou senha inválidos.';return}await enter(data.session)});
+ const {data:{session}}=await client.auth.getSession();await enter(session);
+ client.auth.onAuthStateChange((_event,session)=>{if(!session){gate.hidden=false;document.querySelector('main').hidden=true;window.olivasSession=null}});
+ if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+bootOlivas();
+
 
