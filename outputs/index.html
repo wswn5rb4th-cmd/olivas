@@ -12,6 +12,8 @@
   <title>Olivas — histórias servidas à mesa</title>
 </head>
 <body>
+  <section id="authGate" class="auth-gate" aria-label="Acesso restrito ao Olivas"><form id="authForm" class="auth-card"><span class="brand-mark">O</span><p class="eyebrow">OLIVAS · ÁREA INTERNA</p><h1>Acesso da equipe</h1><p>Entre com seu e-mail e senha autorizados.</p><label>E-mail<input name="email" type="email" autocomplete="username" required></label><label>Senha<input name="password" type="password" autocomplete="current-password" required></label><button class="button button-primary" type="submit">Entrar</button><p id="authMessage" role="status" aria-live="polite"></p></form></section>
+  <div id="staffWatermark" class="staff-watermark" hidden></div>
   <header class="topbar">
     <a class="brand" href="#inicio" aria-label="Olivas, início"><span class="brand-mark">O</span><span><b>OLIVAS</b><small>COQUETELARIA · CADERNO DE BAR</small></span></a>
     <button class="icon-button" id="installButton" hidden aria-label="Instalar aplicativo" title="Instalar">↧</button>
@@ -74,6 +76,7 @@
   <script src="iba-data.js"></script>
   <script src="iba-history.js"></script>
   <script src="study-data.js"></script>
-  <script src="app.js?v=35"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0"></script>
+  <script src="app.js?v=36"></script>
 </body>
 </html>
