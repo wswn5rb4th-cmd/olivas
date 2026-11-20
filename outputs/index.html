@@ -64,9 +64,9 @@
     </section>
     <section class="panel" id="settingsPanel" role="tabpanel" hidden>
       <div class="section-heading"><div><span class="eyebrow">SEMPRE ATUALIZADO</span><h2>Menu Olivas</h2><p>Cadastre, edite ou remova os drinks disponíveis no bar.</p></div><span class="section-symbol">✳</span></div>
-      <div class="settings-actions"><button class="button button-primary" id="addDrink">＋ Adicionar drink</button><button class="button button-quiet" id="exportData">Exportar backup</button><label class="button button-quiet file-button">Importar backup<input id="importData" type="file" accept="application/json,.json" hidden></label><button class="button button-quiet" id="restoreMenu">Restaurar transcrição do PDF</button></div>
+      <div class="settings-actions"><button class="button button-quiet" id="signOutButton">Sair da conta</button><button class="button button-primary" id="addDrink">＋ Adicionar drink</button><button class="button button-quiet" id="exportData">Exportar backup</button><label class="button button-quiet file-button">Importar backup<input id="importData" type="file" accept="application/json,.json" hidden></label><button class="button button-quiet" id="restoreMenu">Restaurar transcrição do PDF</button></div>
       <p class="storage-note">Seus dados ficam salvos neste dispositivo. O backup inclui drinks do menu e favoritos.</p>
-      <div id="settingsList" class="settings-list"></div>
+      <div id="settingsList" class="settings-list"></div><section id="staffAdmin" class="staff-admin" hidden><div class="section-heading"><div><span class="eyebrow">CONTROLE DE ACESSO</span><h2>Equipe Olivas</h2><p>Convide, bloqueie e acompanhe os acessos.</p></div></div><form id="inviteStaffForm" class="invite-form"><label>Nome do funcionário<input name="display_name" required maxlength="80"></label><label>E-mail<input name="email" type="email" required></label><button class="button button-primary" type="submit">Convidar funcionário</button></form><h3>Funcionários</h3><div id="staffList" class="settings-list"></div><h3>Histórico de acessos</h3><div id="accessHistory" class="settings-list"></div></section>
     </section>
     <footer class="footer"><span>UM BRINDE ÀS BOAS HISTÓRIAS.</span><span>SEU CADERNO OLIVAS <i>✳</i></span></footer>
   </main>
