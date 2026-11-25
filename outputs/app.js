@@ -165,10 +165,13 @@ $('#restoreMenu').addEventListener('click',()=>{state.menu=structuredClone(MENU_
 let installPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;$('#installButton').hidden=false});$('#installButton').addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;$('#installButton').hidden=true});
 
 async function bootOlivas(){
- const gate=$('#authGate'),form=$('#authForm'),message=$('#authMessage');
+ const gate=$('#authGate'),form=$('#authForm'),message=$('#authMessage'),recoveryForm=$('#recoveryForm'),recoveryMessage=$('#recoveryMessage');
  const client=window.supabase?.createClient('https://mpqqbtpewhtgemsfafhz.supabase.co','sb_publishable_78sR-ZguyIm69-MWbrE1Tg_cJrGOvHD');
  if(!client){message.textContent='Não foi possível carregar o serviço de autenticação.';return}
  window.olivasSupabase=client;
+ let recoveryActive=new URLSearchParams(location.hash.slice(1)).get('type')==='recovery';
+ function showRecoveryForm(){gate.hidden=false;document.querySelector('main').hidden=true;form.hidden=true;recoveryForm.hidden=false;recoveryMessage.textContent='Defina uma nova senha para acessar o OLIVAS.'}
+ if(recoveryActive)showRecoveryForm();
  async function enter(session){
   if(!session){gate.hidden=false;document.querySelector('main').hidden=true;return}
   const {data:profile,error:profileError}=await client.from('profiles').select('email,display_name,role,active').eq('id',session.user.id).single();
@@ -201,8 +204,9 @@ async function bootOlivas(){
  $('#staffAdmin').addEventListener('click',async e=>{const a=e.target.closest('[data-staff-active]'),d=e.target.closest('[data-staff-delete]');try{if(a){await callAdmin({action:'set_active',user_id:a.dataset.staffActive,active:a.dataset.active==='true'});toast('Acesso atualizado')}else if(d){if(!confirm('Excluir definitivamente este funcionário?'))return;await callAdmin({action:'delete',user_id:d.dataset.staffDelete});toast('Funcionário excluído')}else return;await loadStaffAdmin()}catch(err){toast('Não foi possível concluir: '+(err.message||'erro'))}});
  $('#signOutButton').addEventListener('click',async()=>{await client.auth.signOut();location.reload()});
  form.addEventListener('submit',async e=>{e.preventDefault();message.textContent='Verificando acesso…';const fd=new FormData(form);const {data,error}=await client.auth.signInWithPassword({email:fd.get('email'),password:fd.get('password')});if(error){message.textContent='E-mail ou senha inválidos.';return}await enter(data.session)});
- const {data:{session}}=await client.auth.getSession();await enter(session);
- client.auth.onAuthStateChange((_event,session)=>{if(!session){gate.hidden=false;document.querySelector('main').hidden=true;window.olivasSession=null}});
+ recoveryForm.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(recoveryForm),password=fd.get('password');if(password!==fd.get('confirmPassword')){recoveryMessage.textContent='As senhas não coincidem.';return}recoveryMessage.textContent='Salvando sua senha…';try{const {error}=await client.auth.updateUser({password});if(error){recoveryMessage.textContent='Não foi possível salvar a senha. Solicite um novo link de recuperação.';return}recoveryActive=false;history.replaceState(null,'',location.pathname);recoveryForm.reset();recoveryForm.hidden=true;form.hidden=false;recoveryMessage.textContent='';const {data:{session}}=await client.auth.getSession();if(session){await enter(session)}else{message.textContent='Senha atualizada. Entre com seu e-mail e a nova senha.'}}catch{recoveryMessage.textContent='Falha de conexão. Tente novamente.'}});
+ client.auth.onAuthStateChange((event,session)=>{if(event==='PASSWORD_RECOVERY'){recoveryActive=true;showRecoveryForm();return}if(!session&&!recoveryActive){gate.hidden=false;document.querySelector('main').hidden=true;window.olivasSession=null}});
+ const {data:{session}}=await client.auth.getSession();if(!recoveryActive)await enter(session);
  if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 bootOlivas();
